@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-// const fs = require('fs')
-// const https = require('https')
+const fs = require('fs')
+const https = require('https')
 
 const mongoose = require('mongoose')
 // const mongoDB = 'mongodb://127.0.0.1/xpoesy_database' //testing localhost
@@ -18,16 +18,16 @@ const db = mongoose.connection
 
 // db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
-// const privateKey = fs.readFileSync('./key.pem', 'utf8');
-// const certificate = fs.readFileSync('./cert.pem', 'utf8');
-// const ca = fs.readFileSync('./csr.pem', 'utf8');
+const privateKey = fs.readFileSync('./key.pem', 'utf8');
+const certificate = fs.readFileSync('./cert.pem', 'utf8');
+const ca = fs.readFileSync('./csr.pem', 'utf8');
 
-// const credentials = {
-//     key: privateKey,
-//     cert: certificate,
-//     // ca: ca
-// };
-// const httpsServer = https.createServer(credentials, app);
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    // ca: ca
+};
+const httpsServer = https.createServer(credentials, app);
 
 app.use(cors({
     // origin: 'http://localhost:8080',
@@ -54,9 +54,9 @@ app.use('/game', gameroom);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-    console.log("The server is running on Port 5000")
-});
-// httpsServer.listen(port, () => {
-//     console.log("The server is running on Port 433")
+// app.listen(port, () => {
+//     console.log("The server is running on Port 5000")
 // });
+httpsServer.listen(port, () => {
+    console.log("The server is running on Port 433")
+});
