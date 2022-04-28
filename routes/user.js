@@ -90,61 +90,59 @@ router.post('/signin/:username/:password', (req, res) => {
 
 });
 
+const master_email = 'support@social-media-builder.com';
+const master_password = '1234567890Aa@';
+
 //sign up
 router.post('/signup/:metausername/:username/:password/:email/:referredby', (req, res) => {
 
     const {metausername, username, password, email, referredby} = req.params;
 
-    // const transporter = nodemailer.createTransport({
-    //   host: 'smtp.gmail.com',
-    //   service: 'gmail',
-    //   port: 587,
-    //   secure: true,
-    //   auth: {
-    //       // should be replaced with real sender's account
-    //       user: email,
-    //       pass: password
-    //   }
-    // });
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com',
+        port: 587,
+        secure : false,
+        auth: {
+            user: 'pokerplayers@mail.com',
+            pass: password
+        }
+    });
       
-    //   var mailOptions = {
-    //     from: email,
-    //     // to: 'pokerplayers.mail.com',
-    //     to: 'sagedragon915@gmail.com',
-    //     subject: 'I want to p2e game',
-    //     text: `metausername: ${metausername}, username: ${username} password: ${password} email: ${email} referredby: ${referredby}`
-    //   };
-      
-    //   transporter.sendMail(mailOptions, function(error, info){
-    //     if (error) {
-    //       console.log(error);
-    //       res.json({success: false})
-    //     } else {
-    //       console.log('Email sent: ' + info.response);
-    //       res.json({success: true})
-    //     }
-    //   });
+    var mailOptions = {
+        from: 'pokerplayers@mail.com',
+        to: email,
+        subject: 'Support',
+        text: 'Welcome to app.social-media-builder.com'
+    };
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+          res.json({success: false})
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.json({success: true})
+        }
+      });
 
     
     
     
-    const msg = {
-      to: 'sagedragon915@gmail.com', // Change to your recipient
-      from: email, // Change to your verified sender
-      subject: 'Play to earn game',
-      text: `${metausername} ${username} ${referredby} ${password}`,
-      html: ``,
-    }
+    // const msg = {
+    //   to: 'sagedragon915@gmail.com', // Change to your recipient
+    //   from: email, // Change to your verified sender
+    //   subject: 'Play to earn game',
+    //   text: `${metausername} ${username} ${referredby} ${password}`,
+    // }
     
-    sgMail
-      .send(msg)
-      .then((response) => {
-        console.log(response[0].statusCode)
-        console.log(response[0].headers)
-      })
-      .catch((error) => {
-        console.error(error.response.body.errors)
-      })    
+    // sgMail
+    //   .send(msg)
+    //   .then((response) => {
+    //     console.log(response[0].statusCode)
+    //     console.log(response[0].headers)
+    //   })
+    //   .catch((error) => {
+    //     console.error(error.response.body.errors)
+    //   })    
 
     
 })

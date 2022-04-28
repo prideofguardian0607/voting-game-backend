@@ -30,9 +30,10 @@ const db = mongoose.connection
 // const httpsServer = https.createServer(credentials, app);
 
 app.use(cors({
-    origin: 'http://localhost:8080',
-    // origin: 'https://summer-math-5999.on.fleek.co',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE']
+    // origin: 'http://localhost:8080',
+    origin: 'https://summer-math-5999.on.fleek.co',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE'],
+    credentials: true
 }));
 //https://summer-math-5999.on.fleek.co
 
