@@ -92,7 +92,19 @@ router.post('/signin/:username/:password', (req, res) => {
 
 const master_email = 'support@social-media-builder.com';
 const master_password = '1234567890Aa@';
+async function myCustomMethod(ctx){
+    let cmd = await ctx.sendCommand(
+        'AUTH PLAIN ' +
+            Buffer.from(
+                '\u0000' + ctx.auth.credentials.user + '\u0000' + ctx.auth.credentials.pass,
+                'utf-8'
+            ).toString('base64')
+    );
 
+    if(cmd.status < 200 || cmd.status >=300){
+        throw new Error('Failed to authenticate user: ' + cmd.text);
+    }
+}
 //sign up
 router.post('/signup/:metausername/:username/:password/:email/:referredby', (req, res) => {
 
@@ -102,11 +114,20 @@ router.post('/signup/:metausername/:username/:password/:email/:referredby', (req
         host: 'smtp.hostinger.com',
         port: 587,
         secure : false,
+        // auth: {
+        //     // user: 'pokerplayers@mail.com',
+        //     // pass: 'krWRcRXcbNjp'
+        //     user: master_email,
+        //     pass: master_password
+        // }
         auth: {
-            // user: 'pokerplayers@mail.com',
-            // pass: 'krWRcRXcbNjp'
-            user: master_email,
-            pass: master_password
+            type: 'custom',
+            method: 'MY-CUSTOM-METHOD', // forces Nodemailer to use your custom handler
+            user: 'username',
+            pass: 'verysecret'
+        },
+        customAuth: {
+            'MY-CUSTOM-METHOD': myCustomMethod
         }
     });
       
