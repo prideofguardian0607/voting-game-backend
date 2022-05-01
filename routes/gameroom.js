@@ -29,7 +29,7 @@ router.post('/create/:data', (req, res) => {
 
 router.post('/pay/:code/:address', (req, res) => {
     const {code, address} = req.params;
-    GameRoom.findOne({code: code.substring(0, 4)}, null, {sort: {_id: -1}}, (error, response) => {
+    GameRoom.findOne({code: code.substring(0, 4)}, (error, response) => {
         if(response) {
             let players = response.players;
             let index = players.findIndex(player => {
@@ -40,9 +40,12 @@ router.post('/pay/:code/:address', (req, res) => {
                 if(player)
                     return player.get('code') == code;
             });
-            console.log(temp_player)
-            players.splice(index, 1, {username: temp_player.get('username'), code: code, isPay: true, voted: ['', '', ''], order: 0, address: address});
-
+            if(temp_player)
+                players.splice(index, 1, {username: temp_player.get('username'), code: code, isPay: true, voted: ['', '', ''], order: 0, address: address});
+            else {
+                res.json({success: false});
+                return;
+            }
             GameRoom.findOneAndUpdate({ code: code.substring(0, 4) }, {
                 players: players
             }, (error, response) => {
@@ -101,7 +104,6 @@ router.get('/getplayers/:code', (req, res) => {
                     
                 });
             }
-            console.log(response);
             res.json(response)
         }
     });

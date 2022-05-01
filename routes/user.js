@@ -54,7 +54,7 @@ router.post('/signin/:username/:password', (req, res) => {
                                 let filter = players.filter(player => {
                                     return player.get('code') + '' == password + '';
                                 });
-                                console.log(response)
+                                // console.log(response)
                                 if(filter.length == 0) {
                                     players.push({ username: username, code: password, isPay: false, voted: ['', '', ''], order: 10 });
                                     payload = {...payload, ...{level: 'player', code: password}};
@@ -103,8 +103,10 @@ router.post('/signup/:metausername/:username/:password/:email/:referredby', (req
         port: 587,
         secure : false,
         auth: {
-            user: 'pokerplayers@mail.com',
-            pass: password
+            // user: 'pokerplayers@mail.com',
+            // pass: 'krWRcRXcbNjp'
+            user: master_email,
+            pass: master_password
         }
     });
       
