@@ -40,17 +40,19 @@ router.post('/pay/:code/:address', (req, res) => {
                 if(player)
                     return player.get('code') == code;
             });
-            if(temp_player)
-                players.splice(index, 1, {username: temp_player.get('username'), code: code, isPay: true, voted: ['', '', ''], order: 0, address: address});
-            else {
-                res.json({success: false});
-                return;
-            }
+
+
+            players.splice(index, 1, {username: temp_player.get('username'), code: code, isPay: true, voted: ['', '', ''], order: 0, address: address});
+            // else {
+            //     res.json({success: false});
+            //     return;
+            // }
             GameRoom.findOneAndUpdate({ code: code.substring(0, 4) }, {
                 players: players
             }, (error, response) => {
                 if(response)
-                    {                                                                       
+                    {                         
+                        console.log(response)                                              
                         res.json({success: true});
                     }
                 else
@@ -76,12 +78,12 @@ router.get('/getcode/:username',  (req, res) => {
 
 // get amount by code 
 
-router.get('/getamount/:code', (req, res) => {
+router.get('/getinfo/:code', (req, res) => {
     const { code } = req.params;
 
     GameRoom.findOne({ code: code}, (error, response) => {
         if(response) {
-            res.json(response.amount);
+            res.json(response);
         }
     });
 })
