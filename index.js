@@ -52,7 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/user', user);
 app.use('/game', gameroom);
 
-const port = process.env.PORT || 3000;//443
+const port = process.env.PORT || 3001;//443
 
 app.listen(port, () => {
     console.log("The server is running on Port " + port)
